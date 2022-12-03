@@ -1,3 +1,9 @@
+"""This is file has two scripts that plot the occurrence of a word in Tweets with respect to days.
+There is a single and a multithreaded version.  The multithreaded version is considerably faster for 
+searches over many days.
+
+Note that very common terms, like "trump" are impossibly long for even one day.
+"""
 from snscrape.modules.twitter import TwitterSearchScraper
 import pprint
 import datetime
@@ -8,9 +14,11 @@ TODAY = datetime.datetime.now()
 
 
 class scrapeThread(threading.Thread):
-    def __init__(self, threadID, searchString):
+    """A thread that scrapes Twitter tiven a search string counting the results.
+    The counts are stored in a dictionary with the day being the key
+    """
+    def __init__(self, searchString):
         threading.Thread.__init__(self)
-        self.threadID = threadID
         self.searchString = searchString
         self.search = None
         self.tweets = {}
@@ -38,13 +46,13 @@ def plotPulseMT(keyword, days):
             f' {keyword} since:{startDate.date()} until:{endDate.date()} lang:"en" '
         )
         threadName = str(startDate.date())
-        thread = scrapeThread(threadName, searchString)
+        thread = scrapeThread(searchString)
         thread.start()
         threads.append(thread)
         endDate = startDate
         startDate = endDate - datetime.timedelta(days=1)
 
-    # what for all the threads to finish
+    # wait for all the threads to finish
     for thread in threads:
         thread.join()
 
@@ -57,7 +65,7 @@ def plotPulseMT(keyword, days):
             else:
                 results[day] += thread.tweets[day]
 
-    del results[TODAY.date()]  # today is a partial day
+    del results[TODAY.date()]  # today is a partial day, delete this data
     pprint.pprint(results)
 
     plt.title(f"Occurances of '{keyword.upper()}' on Twitter")
@@ -95,3 +103,17 @@ def plotPulseST(keyword, days):
     plt.tick_params(axis="x", which="major", labelsize=6)
     plt.tight_layout()
     plt.show()
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(
+        prog="twitPulse", description="Count occurances of a keyword in twitter and plot versus days"
+    )
+    parser.add_argument("-d", "--day", type=int, default=1, help="The days to search (default=1)")
+    parser.add_argument("-k", "--keyword", required=True, help="The keyword to search for")
+    args = parser.parse_args()
+
+    if args.day == 1:
+        plotPulseST(args.keyword, args.day)
+    else:
+        plotPulseMT(args.keyword, args.day)

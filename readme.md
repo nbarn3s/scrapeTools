@@ -6,10 +6,25 @@ The required packages can be installed with:
     pip install -r requirements.txt
 
 ## scrapeTools.twitPulse
-This is a file has two scripts that plot the occurrence of a word in Tweets with respect to days.  There is a single and a multithreaded version.  The multithreaded version is considerably faster for searches over many days.  Note that very common terms, like "trump" are impossibly long for even one day.
+This is file has two scripts that plot the occurrence of a word in Tweets with respect to days.  There is a single and a multithreaded version.  The multithreaded version is considerably faster for searches over many days.  Note that very common terms, like "trump" are impossibly long for even one day.
+
+### Usage
+    usage: twitPulse [-h] [-d DAY] -k KEYWORD
+
+    Count occurances of a keyword in twitter and plot versus days
+
+    options:
+    -h, --help            show this help message and exit
+    -d DAY, --day DAY     The days to search (default=1)
+    -k KEYWORD, --keyword KEYWORD
+                          The keyword to search for
 
 ### Examples
 I am showing two examples of searches for references to alt-right terms over the past year.
+
+    python twitPulse.py -k "wwg1wga" -d365 
+
+or from within a Python interpreter:
 
     from scrapeTools.twitPulse import plotPulseMT
     plotPulseMT("wwg1wga", 365)
@@ -19,6 +34,10 @@ Results in the plot of the occurrences of "wwg1wga" over the past year:
 ![plotPulse example](./doc/plotPulse1.png)
 
 It was nice to see that there were fewer occurrences than I expected. Note that the values are written to standard out.  There is a [copy for this example here](./doc/stdout1.txt).
+
+    python twitPulse.py -k "'patriot front'" -d365 
+
+or from within a Python interpreter:
 
     from scrapeTools.twitPulse import plotPulseMT
     plotPulseMT("'patriot front'", 365)
