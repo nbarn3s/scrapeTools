@@ -46,7 +46,7 @@ Results in the plot of the occurrences of "patriot front" over the past year:
 
 ![plotPulse example](./doc/plotPulse2.png)
 
-Most of the time, these guys do not seem to be mentioned at all, though there are dramatic spikes of discussion about the Patriot Front over the past year, with the four largest peaks at:
+Most of the time, this group does not seem to be mentioned much, though there were dramatic spikes in mentions over the past year, with the four largest peaks at:
 
 |Date         | Mentions | Events|
 |-------------|:--------:|-------|

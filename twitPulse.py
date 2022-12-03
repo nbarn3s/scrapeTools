@@ -1,22 +1,23 @@
 """This is file has two scripts that plot the occurrence of a word in Tweets with respect to days.
-There is a single and a multithreaded version.  The multithreaded version is considerably faster for 
+There is a single and a multithreaded version.  The multithreaded version is considerably faster for
 searches over many days.
 
 Note that very common terms, like "trump" are impossibly long for even one day.
 """
-from snscrape.modules.twitter import TwitterSearchScraper
+import threading
 import pprint
 import datetime
+from snscrape.modules.twitter import TwitterSearchScraper
 import matplotlib.pyplot as plt
-import threading
 
 TODAY = datetime.datetime.now()
 
 
-class scrapeThread(threading.Thread):
+class ScrapeThread(threading.Thread):
     """A thread that scrapes Twitter tiven a search string counting the results.
     The counts are stored in a dictionary with the day being the key
     """
+
     def __init__(self, searchString):
         threading.Thread.__init__(self)
         self.searchString = searchString
@@ -45,8 +46,7 @@ def plotPulseMT(keyword, days):
         searchString = (
             f' {keyword} since:{startDate.date()} until:{endDate.date()} lang:"en" '
         )
-        threadName = str(startDate.date())
-        thread = scrapeThread(searchString)
+        thread = ScrapeThread(searchString)
         thread.start()
         threads.append(thread)
         endDate = startDate
@@ -104,13 +104,20 @@ def plotPulseST(keyword, days):
     plt.tight_layout()
     plt.show()
 
+
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(
-        prog="twitPulse", description="Count occurances of a keyword in twitter and plot versus days"
+        prog="twitPulse",
+        description="Count occurrences of a keyword in twitter and plot versus days",
     )
-    parser.add_argument("-d", "--day", type=int, default=1, help="The days to search (default=1)")
-    parser.add_argument("-k", "--keyword", required=True, help="The keyword to search for")
+    parser.add_argument(
+        "-d", "--day", type=int, default=1, help="The days to search (default=1)"
+    )
+    parser.add_argument(
+        "-k", "--keyword", required=True, help="The keyword to search for"
+    )
     args = parser.parse_args()
 
     if args.day == 1:
