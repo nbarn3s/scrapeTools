@@ -1,5 +1,7 @@
 # Social Media Scraping
-This is where I plan to store my experiments with scraping using the package [snscrape](https://github.com/JustAnotherArchivist/snscrape).  If they have any use at all, then it is probably as another demo of the package.
+This is where I am storing my experiments with scraping social media data.  These are using the package [snscrape](https://github.com/JustAnotherArchivist/snscrape) and a fork of [Twint](https://github.com/nbarn3s/twint) I am working on cleaning up since it seems to have been abandoned.  I have also used [Selenium](https://www.selenium.dev/) as a scraper for other projects.  An example of its use is in the [scripts of my alias](https://github.com/nbarn3s/alias/tree/main/scripts) repo.
+
+What I have written here are not tools in their own rights, just consider them demos of the packages.
 
 The required packages can be installed with:
 
